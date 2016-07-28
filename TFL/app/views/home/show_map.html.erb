@@ -1,0 +1,19 @@
+<%= javascript_include_tag src="//maps.googleapis.com/maps/api/js?v=3.23&key=AIzaSyCmwPHbwcsCMgwihP4F6Ko-EkIkLAsNYQw" %>
+<%= javascript_include_tag  src="//cdn.rawgit.com/mahnunchik/markerclustererplus/master/dist/markerclusterer.min.js" %>
+<% content_for :scripts do %>
+  <script type="text/javascript">
+    handler = Gmaps.build('Google');
+    handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+      markers = handler.addMarkers(<%=raw @hash.to_json %>);
+      handler.bounds.extendWith(markers);
+      handler.fitMapToBounds();
+    });
+  </script>
+<% end %>
+<body>
+	<div style='width: 800px;'>
+	  <div id="map" style='width: 100%; height: 100%;'></div>
+	</div>
+</body> 
+<%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+<%= yield :scripts %>
